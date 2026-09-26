@@ -5,8 +5,8 @@ function high_quality_video_example()
     %define location and filename where video will be stored
     %written a bit weird to make it fit when viewed in assignment
     %you will need to change the path and file name for your own purposes
-    mypath1 = 'C:\Users\taylorott\Dropbox (Personal)\OrionTeachingMaterials\';
-    mypath2 = 'AppliedMathForEngineers\Modules\Strandbeast\graphics\';
+    mypath1 = 'C:\Users\fhalaska\Documents\MechEMath\mechemath-module2';
+    mypath2 = '\videos';
     fname='square_animation.avi';
     input_fname = [mypath1,mypath2,fname];
     

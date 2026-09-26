@@ -23,7 +23,7 @@ function length_errors = link_length_error_func(vertex_coords, leg_params)
 
     vertex_coords = column_to_matrix(vertex_coords);
 
-    for i = 1:length(leg_params.num_linkages)
+    for i = 1:leg_params.num_linkages
         vert_1 = leg_params.link_to_vertex_list(i, 1);
         vert_2 = leg_params.link_to_vertex_list(i, 2);
 

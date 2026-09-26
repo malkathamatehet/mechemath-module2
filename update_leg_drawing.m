@@ -10,9 +10,9 @@
 %       to a plot of one of the vertices in the linkage
 function update_leg_drawing(complete_vertex_coords, leg_drawing, leg_params)
     %iterate through each link, and update corresponding link plot
+    complete_vertex_coords = column_to_matrix(complete_vertex_coords);
     for linkage_index = 1:leg_params.num_linkages
-        complete_vertex_coords = column_to_matrix(complete_vertex_coords);
-
+        
         vert_1 = leg_params.link_to_vertex_list(linkage_index, 1);
         vert_2 = leg_params.link_to_vertex_list(linkage_index, 2);
         %linkage_index is the label of the current link
@@ -45,8 +45,8 @@ function update_leg_drawing(complete_vertex_coords, leg_drawing, leg_params)
 
     %crank_x and crank_y should both be two element arrays
     %containing the x and y coordinates of the line segment describing the crank
-    crank_x = [leg_params.vertex_pos0(1), leg_params.vertex_pos0(1) + leg_params.crank_length * cos(theta)];
-    crank_y = [leg_params.vertex_pos0(2),leg_params.vertex_pos0(2) + leg_params.crank_length * sin(theta)];
+    crank_x = [leg_params.vertex_pos0(1), complete_vertex_coords(1,1)];
+    crank_y = [leg_params.vertex_pos0(2),complete_vertex_coords(1,2)];
     
     set(leg_drawing.crank,'xdata',crank_x,'ydata',crank_y);
 end

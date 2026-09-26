@@ -6,14 +6,16 @@ function [x0, exit_flag] = newton_solver_mult(fun,x0,dxtol,ftol,max_iter, dxmax,
 
         [f_x, j] = fun(x0);
     else
+      
         f_x = fun(x0);
         j = j_approx(fun, x0);
     end
 
     x1 = x0 - j\f_x;
 
+
     while sum(abs(f_x)) > ftol && sum(abs(x1-x0)) > dxtol
-        
+
         if sum(abs(x1-x0)) > dxmax
             exit_flag = 1;
             break
@@ -24,7 +26,7 @@ function [x0, exit_flag] = newton_solver_mult(fun,x0,dxtol,ftol,max_iter, dxmax,
 
             [f_x, j] = fun(x0);
         else
-            [f_x, ~] = fun(x0);
+            f_x = fun(x0);
             j = j_approx(fun, x0);
         end
         
