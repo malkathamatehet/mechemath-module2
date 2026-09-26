@@ -6,7 +6,7 @@ function [x0, exit_flag] = newton_solver_mult(fun,x0,dxtol,ftol,max_iter, dxmax,
 
         [f_x, j] = fun(x0);
     else
-        [f_x, ~] = fun(x0);
+        f_x = fun(x0);
         j = j_approx(fun, x0);
     end
 
@@ -44,6 +44,6 @@ function [x0, exit_flag] = newton_solver_mult(fun,x0,dxtol,ftol,max_iter, dxmax,
     end
 end
 
-x_guess = [1;2;3];
-[root, exit] = newton_solver_mult(@test_function02, x_guess, 1e-14, 1e-14, 200, 1e4, 1);
-[test, ~] = test_function02(root)
+% x_guess = [1;2;3];
+% [root, exit] = newton_solver_mult(@test_function02, x_guess, 1e-14, 1e-14, 200, 1e4, 1);
+% [test, ~] = test_function02(root)
