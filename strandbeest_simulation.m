@@ -3,7 +3,7 @@ function strandbeest_simulation()
 
     mypath1 = 'C:\Users\fhalaska\Documents\MechEMath\mechemath-module2';
     mypath2 = '\videos';
-    fname='strandbeest_animation.avi';
+    fname='strandbeest_animation_with_vel.avi';
     input_fname = [mypath1,mypath2,fname];
     
     %create a videowriter, which will write frames to the animation file
@@ -45,19 +45,38 @@ function strandbeest_simulation()
 
     tip_points = [];
 
+    vel_arrow = quiver(NaN,NaN,NaN,NaN,"LineWidth",2, 'Color', '#AD2CF2');
+    vel_arrow.MaxHeadSize = 1;
     %your code here
     %this code will likely involve a loop, where you call
     %compute_coords at each iteration
     %you likely will also need to call update_leg_drawing each iteration
+    tip_vels = [];
+    approx_tip_vels = [];
+
     for i = 0:pi/100:4*pi
         root = compute_coords(vertex_coords_guess, leg_params, i);
         update_leg_drawing(root, leg_drawing, leg_params);
-        
+        dVdtheta = compute_velocities(root, leg_params, i);
+        dVdtheta_tip = [dVdtheta(13),dVdtheta(14)];
+        dVdtheta_norm = 10*normalize(dVdtheta_tip,"norm");
+
+        tip_vels = [tip_vels; dVdtheta_tip];
+
+        dVdtheta_approx = compute_approx_velocities(root, leg_params, i);
+        dVdtheta_approx_tip = [dVdtheta_approx(13), dVdtheta_approx(14)];
+
+        approx_tip_vels = [approx_tip_vels; dVdtheta_approx_tip];
+
         tip_points = [tip_points; root(13); root(14)];
         %update the actual plotting window
         tip_points = column_to_matrix(tip_points);
 
         line(tip_points(:,1), tip_points(:,2),"Color","r")
+        vel_arrow.XData = root(13);
+        vel_arrow.YData = root(14);
+        vel_arrow.UData = dVdtheta_norm(1);
+        vel_arrow.VData = dVdtheta_norm(2);
 
         tip_points = matrix_to_column(tip_points);
         drawnow;
@@ -72,4 +91,33 @@ function strandbeest_simulation()
 
     %must call close after all frames are written to save the video
     close(writerObj);
+
+
+    % theta = 0:pi/100:2*pi;
+    % 
+    % figure();
+    % plot(theta, tip_vels(:,1), "LineWidth",3)
+    % hold on
+    % plot(theta, approx_tip_vels(:,1), 'r--', "LineWidth",3)
+    % hold off
+    % xlabel("Theta [rad]", "Interpreter","latex", FontSize=14)
+    % ylabel("X-Velocity [m/s]", "Interpreter","latex", FontSize=14)
+    % title("Tip Vertex X-Velocity Method Comparison", "Interpreter","latex", "FontSize",16)
+    % legend(["Implicit Approach", "Explicit Approach"], "Interpreter","latex", FontSize=14)
+    % ax = gca;
+    % ax.FontSize = 14;
+    % exportgraphics(gca, 'plots/xvel.png', 'Resolution', 300);
+    % 
+    % figure();
+    % plot(theta, tip_vels(:,2), "LineWidth",3)
+    % hold on
+    % plot(theta, approx_tip_vels(:,2), 'r--', "LineWidth",3)
+    % hold off
+    % xlabel("Theta [rad]", "Interpreter","latex", FontSize=14)
+    % ylabel("Y-Velocity [m/s]", "Interpreter","latex", FontSize=14)
+    % title("Tip Vertex Y-Velocity Method Comparison", "Interpreter","latex", "FontSize",16)
+    % legend(["Implicit Approach", "Explicit Approach"], "Interpreter","latex", FontSize=14)
+    % ax = gca;
+    % ax.FontSize = 14;
+    % exportgraphics(gca, 'plots/yvel.png', 'Resolution', 300);
 end
