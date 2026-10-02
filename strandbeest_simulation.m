@@ -1,7 +1,7 @@
 %runs strandbeest simulation
 function strandbeest_simulation()
 
-    mypath1 = 'C:\Users\fhalaska\Documents\MechEMath\mechemath-module2';
+    mypath1 = 'C:\Users\mgazit\OneDrive - Olin College of Engineering\MechE Math\mechemath-module2';
     mypath2 = '\videos';
     fname='strandbeest_animation_with_vel.avi';
     input_fname = [mypath1,mypath2,fname];
@@ -20,10 +20,17 @@ function strandbeest_simulation()
     set(fig1,'units','pixels','position',[0 0 1440 1080]);
     
     %set up the plotting axis
-    hold on; axis equal; axis square
-    axis([-125,50,-100,50])
-    xlabel("x [-]", 'FontSize',12,"Interpreter","latex")
-    ylabel("y [-]", 'FontSize',12,"Interpreter","latex")
+    hold on;
+    ax = gca;
+    ax.FontSize = 14;
+    ax.XAxis.TickLabelInterpreter = 'Latex';
+    ax.YAxis.TickLabelInterpreter = 'Latex';
+    axis equal; axis square;
+    axis([-125,50,-125,50]);
+    xticks(-125:20:50);
+    yticks(-125:20:50);
+    xlabel("$X$ [-]", 'FontSize',12,"Interpreter","latex")
+    ylabel("$Y$ [-]", 'FontSize',12,"Interpreter","latex")
     title("Strandbeest Leg Animation", 'FontSize',16,"Interpreter","latex")
 
 
@@ -54,7 +61,7 @@ function strandbeest_simulation()
     tip_vels = [];
     approx_tip_vels = [];
 
-    for i = 0:pi/100:4*pi
+    for i = 0:pi/100:8*pi
         root = compute_coords(vertex_coords_guess, leg_params, i);
         update_leg_drawing(root, leg_drawing, leg_params);
         dVdtheta = compute_velocities(root, leg_params, i);
