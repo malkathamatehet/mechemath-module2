@@ -29,9 +29,9 @@ function strandbeest_simulation()
     axis([-125,50,-125,50]);
     xticks(-125:20:50);
     yticks(-125:20:50);
-    xlabel("$X$ [-]", 'FontSize',12,"Interpreter","latex")
-    ylabel("$Y$ [-]", 'FontSize',12,"Interpreter","latex")
-    title("Strandbeest Leg Animation", 'FontSize',16,"Interpreter","latex")
+    xlabel("$X$ [-]", 'FontSize',14,"Interpreter","latex")
+    ylabel("$Y$ [-]", 'FontSize',14,"Interpreter","latex")
+    title("Strandbeest Leg Animation", 'FontSize',18,"Interpreter","latex")
 
 
     leg_params = define_leg_parameters();
@@ -61,7 +61,7 @@ function strandbeest_simulation()
     tip_vels = [];
     approx_tip_vels = [];
 
-    for i = 0:pi/100:8*pi
+    for i = 0:pi/100:2*pi
         root = compute_coords(vertex_coords_guess, leg_params, i);
         update_leg_drawing(root, leg_drawing, leg_params);
         dVdtheta = compute_velocities(root, leg_params, i);
@@ -82,8 +82,8 @@ function strandbeest_simulation()
         line(tip_points(:,1), tip_points(:,2),"Color","r")
         vel_arrow.XData = root(13);
         vel_arrow.YData = root(14);
-        vel_arrow.UData = dVdtheta_norm(1);
-        vel_arrow.VData = dVdtheta_norm(2);
+        vel_arrow.UData = dVdtheta_tip(1);
+        vel_arrow.VData = dVdtheta_tip(2);
 
         tip_points = matrix_to_column(tip_points);
         drawnow;
@@ -100,31 +100,37 @@ function strandbeest_simulation()
     close(writerObj);
 
 
-    % theta = 0:pi/100:2*pi;
-    % 
-    % figure();
-    % plot(theta, tip_vels(:,1), "LineWidth",3)
-    % hold on
-    % plot(theta, approx_tip_vels(:,1), 'r--', "LineWidth",3)
-    % hold off
-    % xlabel("Theta [rad]", "Interpreter","latex", FontSize=14)
-    % ylabel("X-Velocity [m/s]", "Interpreter","latex", FontSize=14)
-    % title("Tip Vertex X-Velocity Method Comparison", "Interpreter","latex", "FontSize",16)
-    % legend(["Implicit Approach", "Explicit Approach"], "Interpreter","latex", FontSize=14)
-    % ax = gca;
-    % ax.FontSize = 14;
-    % exportgraphics(gca, 'plots/xvel.png', 'Resolution', 300);
-    % 
-    % figure();
-    % plot(theta, tip_vels(:,2), "LineWidth",3)
-    % hold on
-    % plot(theta, approx_tip_vels(:,2), 'r--', "LineWidth",3)
-    % hold off
-    % xlabel("Theta [rad]", "Interpreter","latex", FontSize=14)
-    % ylabel("Y-Velocity [m/s]", "Interpreter","latex", FontSize=14)
-    % title("Tip Vertex Y-Velocity Method Comparison", "Interpreter","latex", "FontSize",16)
-    % legend(["Implicit Approach", "Explicit Approach"], "Interpreter","latex", FontSize=14)
-    % ax = gca;
-    % ax.FontSize = 14;
-    % exportgraphics(gca, 'plots/yvel.png', 'Resolution', 300);
+    theta = 0:pi/100:2*pi;
+
+    figure();
+    plot(theta, tip_vels(:,1), "LineWidth",3)
+    hold on
+    plot(theta, approx_tip_vels(:,1), 'r--', "LineWidth",3)
+    hold off
+    xlabel("Theta [rad]", "Interpreter","latex", FontSize=14)
+    ylabel("X-Velocity [-]", "Interpreter","latex", FontSize=14)
+    title("Tip Vertex X-Velocity Method Comparison", "Interpreter","latex", "FontSize",16)
+    legend(["Implicit Approach", "Explicit Approach"], "Interpreter","latex", FontSize=14, Location='southeast')
+    axis([0 2*pi -50 30])
+    ax = gca;
+    ax.FontSize = 14;
+    ax.XAxis.TickLabelInterpreter = 'Latex';
+    ax.YAxis.TickLabelInterpreter = 'Latex';
+    exportgraphics(gca, 'plots/xvel.png', 'Resolution', 300);
+
+    figure();
+    plot(theta, tip_vels(:,2), "LineWidth",3)
+    hold on
+    plot(theta, approx_tip_vels(:,2), 'r--', "LineWidth",3)
+    hold off
+    xlabel("Theta [rad]", "Interpreter","latex", FontSize=14)
+    ylabel("Y-Velocity [-]", "Interpreter","latex", FontSize=14)
+    title("Tip Vertex Y-Velocity Method Comparison", "Interpreter","latex", "FontSize",16)
+    legend(["Implicit Approach", "Explicit Approach"], "Interpreter","latex", FontSize=14)
+    axis([0 2*pi -30 40])
+    ax = gca;
+    ax.FontSize = 14;
+    ax.XAxis.TickLabelInterpreter = 'Latex';
+    ax.YAxis.TickLabelInterpreter = 'Latex';
+    exportgraphics(gca, 'plots/yvel.png', 'Resolution', 300);
 end
